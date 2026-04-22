@@ -4,6 +4,8 @@ import subprocess
 import config
 import sys
 
+CONFIG_NAME = '/config.py'
+
 
 def safe_literal_eval(node):
     try:
@@ -71,10 +73,10 @@ def check_git_version_remote(script_dir):
 
 
 def update_config_version(version, script_dir):
-    with open(script_dir + '/config.py', 'r') as f:
+    with open(script_dir + CONFIG_NAME, 'r') as f:
         lines = f.readlines()
 
-    with open(script_dir + '/config.py', 'w') as f:
+    with open(script_dir + CONFIG_NAME, 'w') as f:
         print(":: Updating config version to {}".format(version))
         for line in lines:
             if 'version = ' in line:
@@ -105,9 +107,9 @@ def do_update(script_dir, version=config.version, git_update=True, config_update
         print(result.stdout)
         install_requirements(script_dir)
         
-    if display_config_differences(script_dir + '/config.py', script_dir + '/config.py.example') and config_update:
+    if display_config_differences(script_dir + CONFIG_NAME, script_dir + '/config.py.example') and config_update:
         print(":: Updating config.py")
-        update_config(script_dir + '/config.py',script_dir + '/config.py.example')
+        update_config(script_dir + CONFIG_NAME,script_dir + '/config.py.example')
 
     if version != config.version:
         update_config_version(version, script_dir)

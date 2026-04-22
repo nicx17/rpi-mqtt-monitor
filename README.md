@@ -7,10 +7,6 @@
 [![GitHub language count](https://img.shields.io/github/languages/count/nicx17/rpi-mqtt-monitor)](https://github.com/nicx17/rpi-mqtt-monitor)
 [![GitHub top language](https://img.shields.io/github/languages/top/nicx17/rpi-mqtt-monitor)](https://github.com/nicx17/rpi-mqtt-monitor)
 
-<p align="center">
-  <img src="./images/rpi-mqtt-monitor-2-min.png" alt="Raspberry Pi MQTT Monitor" />
-</p>
-
 The easiest way to track your Raspberry Pi or Ubuntu computer system health and performance in Home Assistant.
 
 * Start monitoring your system in just a few minutes.
@@ -50,9 +46,7 @@ Run this command to use the automated installation:
 bash <(curl -s https://raw.githubusercontent.com/nicx17/rpi-mqtt-monitor/master/remote_install.sh)
 ```
 
-### Automated installation preview
-
-[![asciicast](https://asciinema.org/a/726rhsITLusB88xL4VGPdU2sJ.png)](https://asciinema.org/a/726rhsITLusB88xL4VGPdU2sJ)
+### Automated installation
 
 Raspberry Pi MQTT monitor will be installed in the location where the installer is called, inside a folder named rpi-mqtt-monitor.
 

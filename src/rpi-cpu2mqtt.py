@@ -30,8 +30,8 @@ if not getattr(config, 'hass_verify_ssl', False):
 if config.ext_sensors:
     # append folder ext_sensor_lib
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'ext_sensor_lib')))
-    import ds18b20
-    from sht21 import SHT21
+    import ds18b20  # type: ignore
+    from sht21 import SHT21  # type: ignore
 
 
 configlanguage = configparser.ConfigParser()
@@ -500,11 +500,13 @@ def add_common_attributes(data, icon, name, unit=None, device_class=None, state_
     if state_class:
         data["state_class"] = state_class
 
+ICON_THERMOMETER = "hass:thermometer"
+
 def handle_specific_configurations(data, what_config, device):
     if what_config == "cpu_load":
         add_common_attributes(data, "mdi:speedometer", get_translation("cpu_load"), "%", None, "measurement")
     elif what_config == "cpu_temp":
-        add_common_attributes(data, "hass:thermometer", get_translation("cpu_temperature"), "°C", "temperature", "measurement")
+        add_common_attributes(data, ICON_THERMOMETER, get_translation("cpu_temperature"), "°C", "temperature", "measurement")
     elif what_config == "used_space":
         add_common_attributes(data, "mdi:harddisk", get_translation("disk_usage"), "%", None, "measurement")
     elif what_config == "voltage":
@@ -566,17 +568,13 @@ def handle_specific_configurations(data, what_config, device):
         data["payload_press"] = "display_off"
         data["device_class"] = "restart"
     elif what_config == device + "_temp":
-        add_common_attributes(data, "hass:thermometer", device + " " + get_translation("temperature"), "°C", "temperature", "measurement")
+        add_common_attributes(data, ICON_THERMOMETER, device + " " + get_translation("temperature"), "°C", "temperature", "measurement")
     elif what_config == "rpi_power_status":
         add_common_attributes(data, "mdi:flash", get_translation("rpi_power_status"))
     elif what_config == "apt_updates":
         add_common_attributes(data, "mdi:update", get_translation("apt_updates"))
-    elif what_config == "ds18b20_status":
-        add_common_attributes(data, "hass:thermometer", device + " " + get_translation("temperature"), "°C", "temperature", "measurement")
-        data["state_topic"] = config.mqtt_uns_structure + config.mqtt_topic_prefix + "/" + hostname + "/" + what_config + "_" + device
-        data["unique_id"] = hostname + "_" + what_config + "_" + device
-    elif what_config == "sht21_temp_status":
-        add_common_attributes(data, "hass:thermometer", device + " " + get_translation("temperature"), "°C", "temperature", "measurement")
+    elif what_config in ("ds18b20_status", "sht21_temp_status"):
+        add_common_attributes(data, ICON_THERMOMETER, device + " " + get_translation("temperature"), "°C", "temperature", "measurement")
         data["state_topic"] = config.mqtt_uns_structure + config.mqtt_topic_prefix + "/" + hostname + "/" + what_config + "_" + device
         data["unique_id"] = hostname + "_" + what_config + "_" + device
     elif what_config == "sht21_hum_status":
