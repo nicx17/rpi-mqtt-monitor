@@ -501,22 +501,31 @@ def add_common_attributes(data, icon, name, unit=None, device_class=None, state_
         data["state_class"] = state_class
 
 ICON_THERMOMETER = "hass:thermometer"
+<<<<<<< HEAD
+=======
+MEASUREMENT_CLASS = "measurement"
+RESTART_CLASS = "restart"
+>>>>>>> 076895a (refactor: clean up documentation, add type ignore hints, consolidate sensor configuration, and standardize config file paths)
 
 def handle_specific_configurations(data, what_config, device):
     if what_config == "cpu_load":
-        add_common_attributes(data, "mdi:speedometer", get_translation("cpu_load"), "%", None, "measurement")
+        add_common_attributes(data, "mdi:speedometer", get_translation("cpu_load"), "%", None, MEASUREMENT_CLASS)
     elif what_config == "cpu_temp":
+<<<<<<< HEAD
         add_common_attributes(data, ICON_THERMOMETER, get_translation("cpu_temperature"), "°C", "temperature", "measurement")
+=======
+        add_common_attributes(data, ICON_THERMOMETER, get_translation("cpu_temperature"), "°C", "temperature", MEASUREMENT_CLASS)
+>>>>>>> 076895a (refactor: clean up documentation, add type ignore hints, consolidate sensor configuration, and standardize config file paths)
     elif what_config == "used_space":
-        add_common_attributes(data, "mdi:harddisk", get_translation("disk_usage"), "%", None, "measurement")
+        add_common_attributes(data, "mdi:harddisk", get_translation("disk_usage"), "%", None, MEASUREMENT_CLASS)
     elif what_config == "voltage":
-        add_common_attributes(data, "mdi:flash", get_translation("cpu_voltage"), "V", "voltage", "measurement")
+        add_common_attributes(data, "mdi:flash", get_translation("cpu_voltage"), "V", "voltage", MEASUREMENT_CLASS)
     elif what_config == "swap":
-        add_common_attributes(data, "mdi:harddisk", get_translation("disk_swap"), "%", None, "measurement")
+        add_common_attributes(data, "mdi:harddisk", get_translation("disk_swap"), "%", None, MEASUREMENT_CLASS)
     elif what_config == "memory":
-        add_common_attributes(data, "mdi:memory", get_translation("memory_usage"), "%", None, "measurement")
+        add_common_attributes(data, "mdi:memory", get_translation("memory_usage"), "%", None, MEASUREMENT_CLASS)
     elif what_config == "sys_clock_speed":
-        add_common_attributes(data, "mdi:speedometer", get_translation("cpu_clock_speed"), "MHz", "frequency", "measurement")
+        add_common_attributes(data, "mdi:speedometer", get_translation("cpu_clock_speed"), "MHz", "frequency", MEASUREMENT_CLASS)
     elif what_config == "uptime":
         add_common_attributes(data, "mdi:calendar", get_translation("uptime"))
         data["value_template"] = "{{ as_datetime(value) }}"
@@ -524,16 +533,16 @@ def handle_specific_configurations(data, what_config, device):
     elif what_config == "uptime_seconds":
         add_common_attributes(data, "mdi:timer-outline", get_translation("uptime"), "s", "duration", "total_increasing")
     elif what_config == "wifi_signal":
-        add_common_attributes(data, "mdi:wifi", get_translation("wifi_signal"), "%", None, "measurement")
+        add_common_attributes(data, "mdi:wifi", get_translation("wifi_signal"), "%", None, MEASUREMENT_CLASS)
     elif what_config == "wifi_signal_dbm":
-        add_common_attributes(data, "mdi:wifi", get_translation("wifi_signal_strength"), "dBm", "signal_strength", "measurement")
+        add_common_attributes(data, "mdi:wifi", get_translation("wifi_signal_strength"), "dBm", "signal_strength", MEASUREMENT_CLASS)
     elif what_config == "rpi5_fan_speed":
-        add_common_attributes(data, "mdi:fan", get_translation("fan_speed"), "RPM", None, "measurement")
+        add_common_attributes(data, "mdi:fan", get_translation("fan_speed"), "RPM", None, MEASUREMENT_CLASS)
     elif what_config == "status":
         add_common_attributes(data, "mdi:lan-connect", get_translation("status"))
         data["value_template"] = "{{ 'online' if value == '1' else 'offline' }}"
     elif what_config == "git_update":
-        add_common_attributes(data, "mdi:git", get_translation("rpi_mqtt_monitor"), None, "update", "measurement")
+        add_common_attributes(data, "mdi:git", get_translation("rpi_mqtt_monitor"), None, "update", MEASUREMENT_CLASS)
         data["title"] = "Device Update"
         data["value_template"] = "{{ 'ON' if value_json.installed_ver != value_json.new_ver else 'OFF' }}"
     elif what_config == "update":
@@ -551,46 +560,54 @@ def handle_specific_configurations(data, what_config, device):
         add_common_attributes(data, "mdi:restart", get_translation("system_restart"))
         data["command_topic"] = config.mqtt_discovery_prefix + "/update/" + hostname + "/command"
         data["payload_press"] = "restart"
-        data["device_class"] = "restart"
+        data["device_class"] = RESTART_CLASS
     elif what_config == "shutdown_button":
         add_common_attributes(data, "mdi:power", get_translation("system_shutdown"))
         data["command_topic"] = config.mqtt_discovery_prefix + "/update/" + hostname + "/command"
         data["payload_press"] = "shutdown"
-        data["device_class"] = "restart"
+        data["device_class"] = RESTART_CLASS
     elif what_config == "display_on":
         add_common_attributes(data, "mdi:monitor", get_translation("monitor_on"))
         data["command_topic"] = config.mqtt_discovery_prefix + "/update/" + hostname + "/command"
         data["payload_press"] = "display_on"
-        data["device_class"] = "restart"
+        data["device_class"] = RESTART_CLASS
     elif what_config == "display_off":
         add_common_attributes(data, "mdi:monitor", get_translation("monitor_off"))
         data["command_topic"] = config.mqtt_discovery_prefix + "/update/" + hostname + "/command"
         data["payload_press"] = "display_off"
-        data["device_class"] = "restart"
+        data["device_class"] = RESTART_CLASS
     elif what_config == device + "_temp":
+<<<<<<< HEAD
         add_common_attributes(data, ICON_THERMOMETER, device + " " + get_translation("temperature"), "°C", "temperature", "measurement")
+=======
+        add_common_attributes(data, ICON_THERMOMETER, device + " " + get_translation("temperature"), "°C", "temperature", MEASUREMENT_CLASS)
+>>>>>>> 076895a (refactor: clean up documentation, add type ignore hints, consolidate sensor configuration, and standardize config file paths)
     elif what_config == "rpi_power_status":
         add_common_attributes(data, "mdi:flash", get_translation("rpi_power_status"))
     elif what_config == "apt_updates":
         add_common_attributes(data, "mdi:update", get_translation("apt_updates"))
     elif what_config in ("ds18b20_status", "sht21_temp_status"):
+<<<<<<< HEAD
         add_common_attributes(data, ICON_THERMOMETER, device + " " + get_translation("temperature"), "°C", "temperature", "measurement")
+=======
+        add_common_attributes(data, ICON_THERMOMETER, device + " " + get_translation("temperature"), "°C", "temperature", MEASUREMENT_CLASS)
+>>>>>>> 076895a (refactor: clean up documentation, add type ignore hints, consolidate sensor configuration, and standardize config file paths)
         data["state_topic"] = config.mqtt_uns_structure + config.mqtt_topic_prefix + "/" + hostname + "/" + what_config + "_" + device
         data["unique_id"] = hostname + "_" + what_config + "_" + device
     elif what_config == "sht21_hum_status":
-        add_common_attributes(data, "mdi:water-percent", device + " " + get_translation("humidity"), "%", "humidity", "measurement")
+        add_common_attributes(data, "mdi:water-percent", device + " " + get_translation("humidity"), "%", "humidity", MEASUREMENT_CLASS)
         data["state_topic"] = config.mqtt_uns_structure + config.mqtt_topic_prefix + "/" + hostname + "/" + what_config + "_" + device
         data["unique_id"] = hostname + "_" + what_config + "_" + device
     elif what_config == "data_sent":
-        add_common_attributes(data, "mdi:upload", get_translation("data_sent"), "MB", None, "measurement")
+        add_common_attributes(data, "mdi:upload", get_translation("data_sent"), "MB", None, MEASUREMENT_CLASS)
     elif what_config == "data_received":
-        add_common_attributes(data, "mdi:download", get_translation("data_received"), "MB", None, "measurement")
+        add_common_attributes(data, "mdi:download", get_translation("data_received"), "MB", None, MEASUREMENT_CLASS)
 
 def config_json(what_config, device="0", hass_api=False):
     data = build_data_template(what_config)
     handle_specific_configurations(data, what_config, device)
 
-    if "state_class" in data and data["state_class"] == "measurement" and what_config != "git_update":
+    if "state_class" in data and data["state_class"] == MEASUREMENT_CLASS and what_config != "git_update":
         if config.expire_after_time:
             data["expire_after"] = config.expire_after_time
         if config.use_availability:
