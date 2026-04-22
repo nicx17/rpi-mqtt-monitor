@@ -1,11 +1,11 @@
 # Raspberry Pi MQTT Monitor
 
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/hjelev/rpi-mqtt-monitor)](https://github.com/hjelev/rpi-mqtt-monitor/releases)
-[![GitHub repo size](https://img.shields.io/github/repo-size/hjelev/rpi-mqtt-monitor)](https://github.com/hjelev/rpi-mqtt-monitor)
-[![GitHub issues](https://img.shields.io/github/issues/hjelev/rpi-mqtt-monitor)](https://github.com/hjelev/rpi-mqtt-monitor/issues)
-[![GitHub closed issues](https://img.shields.io/github/issues-closed/hjelev/rpi-mqtt-monitor)](https://github.com/hjelev/rpi-mqtt-monitor/issues?q=is%3Aissue+is%3Aclosed)
-[![GitHub language count](https://img.shields.io/github/languages/count/hjelev/rpi-mqtt-monitor)](https://github.com/hjelev/rpi-mqtt-monitor)
-[![GitHub top language](https://img.shields.io/github/languages/top/hjelev/rpi-mqtt-monitor)](https://github.com/hjelev/rpi-mqtt-monitor)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/nicx17/rpi-mqtt-monitor)](https://github.com/nicx17/rpi-mqtt-monitor/releases)
+[![GitHub repo size](https://img.shields.io/github/repo-size/nicx17/rpi-mqtt-monitor)](https://github.com/nicx17/rpi-mqtt-monitor)
+[![GitHub issues](https://img.shields.io/github/issues/nicx17/rpi-mqtt-monitor)](https://github.com/nicx17/rpi-mqtt-monitor/issues)
+[![GitHub closed issues](https://img.shields.io/github/issues-closed/nicx17/rpi-mqtt-monitor)](https://github.com/nicx17/rpi-mqtt-monitor/issues?q=is%3Aissue+is%3Aclosed)
+[![GitHub language count](https://img.shields.io/github/languages/count/nicx17/rpi-mqtt-monitor)](https://github.com/nicx17/rpi-mqtt-monitor)
+[![GitHub top language](https://img.shields.io/github/languages/top/nicx17/rpi-mqtt-monitor)](https://github.com/nicx17/rpi-mqtt-monitor)
 
 <p align="center">
   <img src="./images/rpi-mqtt-monitor-2-min.png" alt="Raspberry Pi MQTT Monitor" />
@@ -30,11 +30,11 @@ The easiest way to track your Raspberry Pi or Ubuntu computer system health and 
   - [Automated](#automated)
   - [Automated installation preview](#automated-installation-preview)
   - [Manual](#manual)
-  - [How to update](https://github.com/hjelev/rpi-mqtt-monitor/wiki/How-to-update)
-- [Configuration](https://github.com/hjelev/rpi-mqtt-monitor/wiki/Configuration)
-  - [External Sensors](https://github.com/hjelev/rpi-mqtt-monitor/wiki/External-Sensors)
-- [Schedule Raspberry Pi MQTT Monitor execution as a service](https://github.com/hjelev/rpi-mqtt-monitor/wiki/Manual-Installation#schedule-raspberry-pi-mqtt-monitor-execution-as-a-service)
-- [Schedule Raspberry Pi MQTT Monitor execution with a cron](https://github.com/hjelev/rpi-mqtt-monitor/wiki/Manual-Installation#schedule-raspberry-pi-mqtt-monitor-execution-with-a-cron)
+  - [How to update](https://github.com/nicx17/rpi-mqtt-monitor/wiki/How-to-update)
+- [Configuration](https://github.com/nicx17/rpi-mqtt-monitor/wiki/Configuration)
+  - [External Sensors](https://github.com/nicx17/rpi-mqtt-monitor/wiki/External-Sensors)
+- [Schedule Raspberry Pi MQTT Monitor execution as a service](https://github.com/nicx17/rpi-mqtt-monitor/wiki/Manual-Installation#schedule-raspberry-pi-mqtt-monitor-execution-as-a-service)
+- [Schedule Raspberry Pi MQTT Monitor execution with a cron](https://github.com/nicx17/rpi-mqtt-monitor/wiki/Manual-Installation#schedule-raspberry-pi-mqtt-monitor-execution-with-a-cron)
 - [Home Assistant Integration](#home-assistant-integration)
 - [To Do](#to-do)
 - [Feature request](#feature-request)
@@ -47,7 +47,7 @@ The easiest way to track your Raspberry Pi or Ubuntu computer system health and 
 Run this command to use the automated installation:
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/hjelev/rpi-mqtt-monitor/master/remote_install.sh)
+bash <(curl -s https://raw.githubusercontent.com/nicx17/rpi-mqtt-monitor/master/remote_install.sh)
 ```
 
 ### Automated installation preview

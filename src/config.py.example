@@ -21,6 +21,7 @@ qos = 0
 # Home Assistant API configuration
 hass_token = "your_hass_token"
 hass_host = "your_hass_host"
+hass_verify_ssl = False
 
 # Messages configuration
 language = "en"

@@ -134,6 +134,13 @@ hass_api_configuration(){
     printf "Enter Home Assistant API Token: "
     read HA_TOKEN
     sed -i "s|your_hass_token|${HA_TOKEN}|" src/config.py
+
+    printf "Verify SSL certificates? (y/N): "
+    read VERIFY_SSL
+    if [[ "$VERIFY_SSL" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+      sed -i "s/hass_verify_ssl = False/hass_verify_ssl = True/g" src/config.py
+    fi
+
     hass_api=" --hass_api"
     finish_message="Home Assistant API"
 }
