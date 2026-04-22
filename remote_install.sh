@@ -66,6 +66,12 @@ uninstall(){
     echo "No systemd service found for rpi-mqtt-monitor."
   fi
 
+  # Remove the global shortcut if it exists
+  if [ -f /usr/local/bin/rpi-mqtt-monitor ]; then
+    sudo rm -f /usr/local/bin/rpi-mqtt-monitor
+    echo "Removed global shortcut /usr/local/bin/rpi-mqtt-monitor."
+  fi
+
   # Optionally remove git if it was installed by this script
   if command -v git &> /dev/null; then
     read -r -p "Do you want to remove git? [y/N] " response

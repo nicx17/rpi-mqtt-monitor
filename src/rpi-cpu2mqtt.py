@@ -310,7 +310,7 @@ def check_git_update(script_dir):
 
 
 def check_git_version(script_dir):
-    full_cmd = "/usr/bin/git -C {} describe --tags `/usr/bin/git -C {} rev-list --tags --max-count=1`".format(script_dir, script_dir)
+    full_cmd = "/usr/bin/git -C \"{}\" describe --tags `/usr/bin/git -C \"{}\" rev-list --tags --max-count=1`".format(script_dir, script_dir)
     git_version = subprocess.Popen(full_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0].decode("utf-8").replace('\n', '')
 
     return(git_version)
@@ -439,7 +439,7 @@ def print_measured_values(monitored_values):
 
 :: Release notes {}: 
 {}""".format(os.path.dirname(script_dir), remote_version, get_release_notes(remote_version))
-    print(output)
+    print(output)  # lgtm[py/clear-text-logging-sensitive-data]
     
 
 def extract_text(html_string):
@@ -893,7 +893,7 @@ def parse_arguments():
         topic: "{}/update/{}/command"
         payload: "shutdown"
     """.format(get_mac_address(), get_network_ip(), hostname, config.mqtt_discovery_prefix, hostname )
-        print(hass_config)
+        print(hass_config)  # lgtm[py/clear-text-logging-sensitive-data]
         exit()
 
     return args
@@ -1048,16 +1048,16 @@ def on_message(client, userdata, msg):
         update_thread.start()
     elif msg.payload.decode() == "restart":
         print("Restarting the system...")
-        os.system("sudo reboot")
+        subprocess.run(["sudo", "reboot"])
     elif msg.payload.decode() == "shutdown":
         print("Shutting down the system...")
-        os.system("sudo shutdown now")
+        subprocess.run(["sudo", "shutdown", "now"])
     elif msg.payload.decode() == "display_off":
         print("Turn off display")
-        os.system('su -l {} -c "xset -display :0 dpms force off"'.format(config.os_user))
+        subprocess.run(["su", "-l", config.os_user, "-c", "xset -display :0 dpms force off"])
     elif msg.payload.decode() == "display_on":
         print("Turn on display")
-        os.system('su -l {} -c "xset -display :0 dpms force on"'.format(config.os_user))
+        subprocess.run(["su", "-l", config.os_user, "-c", "xset -display :0 dpms force on"])
 
 exit_flag = False
 stop_event = threading.Event()

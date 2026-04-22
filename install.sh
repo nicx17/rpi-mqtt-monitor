@@ -84,15 +84,15 @@ mqtt_configuration(){
   
   printf "Enter mqtt_host: "
   read HOST
-  sed -i "s/ip address or host/${HOST}/" src/config.py
+  sed -i "s|ip address or host|${HOST}|" src/config.py
 
   printf "Enter mqtt_user: "
   read USER
-  sed -i "s/username/${USER}/" src/config.py
+  sed -i "s|username|${USER}|" src/config.py
 
   printf "Enter mqtt_password: "
   read PASS
-  sed -i "s/\"password/\"${PASS}/" src/config.py
+  sed -i "s|\"password|\"${PASS}|" src/config.py
 
   printf "Enter mqtt_port (default is 1883): "
   read PORT
