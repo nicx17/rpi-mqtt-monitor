@@ -391,9 +391,9 @@ def print_measured_values(monitored_values):
    Manufacturer: {}
    OS: {}
    Hostname: {}
-   IP Address: {}
-   MAC Address: {}
-""".format(config.version, check_model_name(), get_manufacturer(), get_os(), hostname, get_network_ip(), get_mac_address())
+   IP Address: <REDACTED>
+   MAC Address: <REDACTED>
+""".format(config.version, check_model_name(), get_manufacturer(), get_os(), hostname)
 
     output += "   Service Sleep Time: {} seconds\n".format(config.service_sleep_time)
     if config.update:
@@ -439,7 +439,7 @@ def print_measured_values(monitored_values):
 
 :: Release notes {}: 
 {}""".format(os.path.dirname(script_dir), remote_version, get_release_notes(remote_version))
-    print(output)  # lgtm[py/clear-text-logging-sensitive-data]
+    print(output)
     
 
 def extract_text(html_string):
@@ -503,20 +503,26 @@ def add_common_attributes(data, icon, name, unit=None, device_class=None, state_
 ICON_THERMOMETER = "hass:thermometer"
 MEASUREMENT_CLASS = "measurement"
 RESTART_CLASS = "restart"
+UNIT_PERCENT = "%"
+UNIT_CELSIUS = "°C"
+CLASS_TEMPERATURE = "temperature"
+TOPIC_UPDATE = "/update/"
+TOPIC_COMMAND = "/command"
 
 def handle_specific_configurations(data, what_config, device):
+    cmd_topic = config.mqtt_discovery_prefix + TOPIC_UPDATE + hostname + TOPIC_COMMAND
     if what_config == "cpu_load":
-        add_common_attributes(data, "mdi:speedometer", get_translation("cpu_load"), "%", None, MEASUREMENT_CLASS)
+        add_common_attributes(data, "mdi:speedometer", get_translation("cpu_load"), UNIT_PERCENT, None, MEASUREMENT_CLASS)
     elif what_config == "cpu_temp":
-        add_common_attributes(data, ICON_THERMOMETER, get_translation("cpu_temperature"), "°C", "temperature", MEASUREMENT_CLASS)
+        add_common_attributes(data, ICON_THERMOMETER, get_translation("cpu_temperature"), UNIT_CELSIUS, CLASS_TEMPERATURE, MEASUREMENT_CLASS)
     elif what_config == "used_space":
-        add_common_attributes(data, "mdi:harddisk", get_translation("disk_usage"), "%", None, MEASUREMENT_CLASS)
+        add_common_attributes(data, "mdi:harddisk", get_translation("disk_usage"), UNIT_PERCENT, None, MEASUREMENT_CLASS)
     elif what_config == "voltage":
         add_common_attributes(data, "mdi:flash", get_translation("cpu_voltage"), "V", "voltage", MEASUREMENT_CLASS)
     elif what_config == "swap":
-        add_common_attributes(data, "mdi:harddisk", get_translation("disk_swap"), "%", None, MEASUREMENT_CLASS)
+        add_common_attributes(data, "mdi:harddisk", get_translation("disk_swap"), UNIT_PERCENT, None, MEASUREMENT_CLASS)
     elif what_config == "memory":
-        add_common_attributes(data, "mdi:memory", get_translation("memory_usage"), "%", None, MEASUREMENT_CLASS)
+        add_common_attributes(data, "mdi:memory", get_translation("memory_usage"), UNIT_PERCENT, None, MEASUREMENT_CLASS)
     elif what_config == "sys_clock_speed":
         add_common_attributes(data, "mdi:speedometer", get_translation("cpu_clock_speed"), "MHz", "frequency", MEASUREMENT_CLASS)
     elif what_config == "uptime":
@@ -526,7 +532,7 @@ def handle_specific_configurations(data, what_config, device):
     elif what_config == "uptime_seconds":
         add_common_attributes(data, "mdi:timer-outline", get_translation("uptime"), "s", "duration", "total_increasing")
     elif what_config == "wifi_signal":
-        add_common_attributes(data, "mdi:wifi", get_translation("wifi_signal"), "%", None, MEASUREMENT_CLASS)
+        add_common_attributes(data, "mdi:wifi", get_translation("wifi_signal"), UNIT_PERCENT, None, MEASUREMENT_CLASS)
     elif what_config == "wifi_signal_dbm":
         add_common_attributes(data, "mdi:wifi", get_translation("wifi_signal_strength"), "dBm", "signal_strength", MEASUREMENT_CLASS)
     elif what_config == "rpi5_fan_speed":
@@ -544,43 +550,43 @@ def handle_specific_configurations(data, what_config, device):
         data["title"] = "New Version"
         data["state_topic"] = config.mqtt_uns_structure + config.mqtt_topic_prefix + "/" + hostname + "/" + "git_update"
         data["value_template"] = "{{ {'installed_version': value_json.installed_ver, 'latest_version': value_json.new_ver } | to_json }}"
-        data["command_topic"] = config.mqtt_discovery_prefix + "/update/" + hostname + "/command"
+        data["command_topic"] = cmd_topic
         data["payload_install"] = "install"
         data['release_url'] = "https://github.com/nicx17/rpi-mqtt-monitor/releases/tag/" + version
         data['entity_picture'] = "https://raw.githubusercontent.com/nicx17/rpi-mqtt-monitor/refs/heads/master/images/update_icon.png"
         data['release_summary'] = get_release_notes(version)
     elif what_config == "restart_button":
         add_common_attributes(data, "mdi:restart", get_translation("system_restart"))
-        data["command_topic"] = config.mqtt_discovery_prefix + "/update/" + hostname + "/command"
+        data["command_topic"] = cmd_topic
         data["payload_press"] = "restart"
         data["device_class"] = RESTART_CLASS
     elif what_config == "shutdown_button":
         add_common_attributes(data, "mdi:power", get_translation("system_shutdown"))
-        data["command_topic"] = config.mqtt_discovery_prefix + "/update/" + hostname + "/command"
+        data["command_topic"] = cmd_topic
         data["payload_press"] = "shutdown"
         data["device_class"] = RESTART_CLASS
     elif what_config == "display_on":
         add_common_attributes(data, "mdi:monitor", get_translation("monitor_on"))
-        data["command_topic"] = config.mqtt_discovery_prefix + "/update/" + hostname + "/command"
+        data["command_topic"] = cmd_topic
         data["payload_press"] = "display_on"
         data["device_class"] = RESTART_CLASS
     elif what_config == "display_off":
         add_common_attributes(data, "mdi:monitor", get_translation("monitor_off"))
-        data["command_topic"] = config.mqtt_discovery_prefix + "/update/" + hostname + "/command"
+        data["command_topic"] = cmd_topic
         data["payload_press"] = "display_off"
         data["device_class"] = RESTART_CLASS
     elif what_config == device + "_temp":
-        add_common_attributes(data, ICON_THERMOMETER, device + " " + get_translation("temperature"), "°C", "temperature", MEASUREMENT_CLASS)
+        add_common_attributes(data, ICON_THERMOMETER, device + " " + get_translation("temperature"), UNIT_CELSIUS, CLASS_TEMPERATURE, MEASUREMENT_CLASS)
     elif what_config == "rpi_power_status":
         add_common_attributes(data, "mdi:flash", get_translation("rpi_power_status"))
     elif what_config == "apt_updates":
         add_common_attributes(data, "mdi:update", get_translation("apt_updates"))
     elif what_config in ("ds18b20_status", "sht21_temp_status"):
-        add_common_attributes(data, ICON_THERMOMETER, device + " " + get_translation("temperature"), "°C", "temperature", MEASUREMENT_CLASS)
+        add_common_attributes(data, ICON_THERMOMETER, device + " " + get_translation("temperature"), UNIT_CELSIUS, CLASS_TEMPERATURE, MEASUREMENT_CLASS)
         data["state_topic"] = config.mqtt_uns_structure + config.mqtt_topic_prefix + "/" + hostname + "/" + what_config + "_" + device
         data["unique_id"] = hostname + "_" + what_config + "_" + device
     elif what_config == "sht21_hum_status":
-        add_common_attributes(data, "mdi:water-percent", device + " " + get_translation("humidity"), "%", "humidity", MEASUREMENT_CLASS)
+        add_common_attributes(data, "mdi:water-percent", device + " " + get_translation("humidity"), UNIT_PERCENT, "humidity", MEASUREMENT_CLASS)
         data["state_topic"] = config.mqtt_uns_structure + config.mqtt_topic_prefix + "/" + hostname + "/" + what_config + "_" + device
         data["unique_id"] = hostname + "_" + what_config + "_" + device
     elif what_config == "data_sent":
@@ -661,9 +667,9 @@ def publish_update_status_to_mqtt(git_update, apt_updates):
         client.publish(config.mqtt_uns_structure + config.mqtt_topic_prefix + "/" + hostname + "/git_update", git_update, qos=1, retain=config.retain)
 
     if config.update:
-        if config.discovery_messages:
-            client.publish(config.mqtt_discovery_prefix + "/update/" + hostname + "/config",
-                           config_json('update'), qos=1)
+        if config.mqtt_discovery:
+            client.publish(config.mqtt_discovery_prefix + TOPIC_UPDATE + hostname + "/config",
+                           json.dumps(config_json("update")), retain=True)
 
     if config.apt_updates:
         if config.discovery_messages:
@@ -738,20 +744,17 @@ def publish_to_mqtt(monitored_values):
             client.publish(f"{config.mqtt_uns_structure}{config.mqtt_topic_prefix}/{hostname}/{key}", value, qos=config.qos, retain=config.retain)
 
   # Publish non standard values    
-    if config.restart_button:
-        if config.discovery_messages:
-            client.publish(config.mqtt_discovery_prefix + "/button/" + config.mqtt_topic_prefix + "/" + hostname + "_restart/config",
-                           config_json('restart_button'), qos=config.qos)
-    if config.shutdown_button:
-        if config.discovery_messages:
-            client.publish(config.mqtt_discovery_prefix + "/button/" + config.mqtt_topic_prefix + "/" + hostname + "_shutdown/config",
-                           config_json('shutdown_button'), qos=config.qos)
-    if config.display_control:
-        if config.discovery_messages:
-            client.publish(config.mqtt_discovery_prefix + "/button/" + config.mqtt_topic_prefix + "/" + hostname + "_display_on/config",
-                           config_json('display_on'), qos=config.qos)
-            client.publish(config.mqtt_discovery_prefix + "/button/" + config.mqtt_topic_prefix + "/" + hostname + "_display_off/config",
-                           config_json('display_off'), qos=config.qos)
+    if config.restart_button and config.discovery_messages:
+        client.publish(config.mqtt_discovery_prefix + "/button/" + config.mqtt_topic_prefix + "/" + hostname + "_restart/config",
+                       config_json('restart_button'), qos=config.qos)
+    if config.shutdown_button and config.discovery_messages:
+        client.publish(config.mqtt_discovery_prefix + "/button/" + config.mqtt_topic_prefix + "/" + hostname + "_shutdown/config",
+                       config_json('shutdown_button'), qos=config.qos)
+    if config.display_control and config.discovery_messages:
+        client.publish(config.mqtt_discovery_prefix + "/button/" + config.mqtt_topic_prefix + "/" + hostname + "_display_on/config",
+                       config_json('display_on'), qos=config.qos)
+        client.publish(config.mqtt_discovery_prefix + "/button/" + config.mqtt_topic_prefix + "/" + hostname + "_display_off/config",
+                       config_json('display_off'), qos=config.qos)
     if config.drive_temps:
         for device, temp in monitored_values['drive_temps'].items():
             if config.discovery_messages:
@@ -884,16 +887,16 @@ def parse_arguments():
         hass_config = """Add this to your Home Assistant switches.yaml file: 
 
   - platform: wake_on_lan
-    mac: "{}"
-    host: "{}"
+    mac: "<YOUR_MAC_ADDRESS>"
+    host: "<YOUR_IP_ADDRESS>"
     name: "{}-switch"
     turn_off:
       service: mqtt.publish
       data:
         topic: "{}/update/{}/command"
         payload: "shutdown"
-    """.format(get_mac_address(), get_network_ip(), hostname, config.mqtt_discovery_prefix, hostname )
-        print(hass_config)  # lgtm[py/clear-text-logging-sensitive-data]
+    """.format(hostname, config.mqtt_discovery_prefix, hostname)
+        print(hass_config)
         exit()
 
     return args
@@ -1089,8 +1092,9 @@ if __name__ == '__main__':
                 print("Error connecting to MQTT broker:", e)
                 sys.exit(1)
 
-            client.subscribe(config.mqtt_discovery_prefix + "/update/" + hostname + "/command")
-            print("Listening to topic : " + config.mqtt_discovery_prefix + "/update/" + hostname + "/command")
+            if config.mqtt_discovery:
+                client.subscribe(config.mqtt_discovery_prefix + TOPIC_UPDATE + hostname + TOPIC_COMMAND)
+                print("Listening to topic : " + config.mqtt_discovery_prefix + TOPIC_UPDATE + hostname + TOPIC_COMMAND)
             client.loop_start()
 
 
